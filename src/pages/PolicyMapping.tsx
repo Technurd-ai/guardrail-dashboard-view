@@ -573,7 +573,7 @@ const GuardrailConfigCard = ({ guardrail, isSelected, onToggle }: any) => {
 const FrameworkMappingView = ({ guardrailTypes, frameworkMapping, policies }: any) => {
   return (
     <div className="space-y-6">
-      {Object.entries(frameworkMapping).map(([key, framework]) => (
+      {Object.entries(frameworkMapping).map(([key, framework]: [string, any]) => (
         <Card key={key}>
           <CardHeader>
             <CardTitle className={`text-${framework.color}-600`}>{framework.name}</CardTitle>

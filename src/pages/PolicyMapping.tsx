@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -576,7 +575,7 @@ const PolicyMapping = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="text-3xl font-bold text-blue-600">
-                    {Math.round((frameworkMapping.owasp.coverage + frameworkMapping.nist.coverage + frameworkMapping.saif.coverage) / 3)}%
+                    {Math.round(frameworks.reduce((acc, f) => acc + f.coverage, 0) / frameworks.length)}%
                   </div>
                   <p className="text-sm text-gray-500">Overall compliance</p>
                 </CardContent>
@@ -797,7 +796,7 @@ const CreatePolicyForm = ({ guardrailTypes, frameworks, policyMode, setPolicyMod
           <p className="text-sm text-gray-600">These are the active guardrails enforced by your policy.</p>
 
           <div className="space-y-3">
-            {guardrailTypes.map((guardrail: any) => (
+            {guardrailTypes.map((guardrail) => (
               <GuardrailConfigCard 
                 key={guardrail.id}
                 guardrail={guardrail}

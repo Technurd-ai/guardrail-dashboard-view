@@ -2,191 +2,406 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import NavigationBar from "@/components/NavigationBar";
-import { Shield, AlertTriangle, CheckCircle, XCircle } from "lucide-react";
+import { Link } from "react-router-dom";
+import { 
+  Shield, 
+  AlertTriangle, 
+  Building, 
+  Search, 
+  TrendingUp, 
+  Users, 
+  Globe, 
+  Database,
+  Target,
+  FileText,
+  Settings,
+  Eye,
+  Plus,
+  ExternalLink
+} from "lucide-react";
 
 const Index = () => {
-  const complianceData = [
-    { framework: "OWASP LLM Top 10", score: 85, status: "good", issues: 2 },
-    { framework: "NIST AI Framework", score: 72, status: "warning", issues: 5 },
-    { framework: "Google SAIF", score: 90, status: "excellent", issues: 1 },
+  const frameworks = [
+    {
+      id: "owasp",
+      name: "OWASP LLM Top 10",
+      description: "Critical security risks for Large Language Models",
+      icon: AlertTriangle,
+      color: "red",
+      coverage: 85,
+      vulnerabilities: 10,
+      criticalIssues: 3,
+      status: "Active",
+      region: "🌍 Global",
+      type: "Security Framework"
+    },
+    {
+      id: "nist",
+      name: "NIST AI RMF",
+      description: "AI Risk Management Framework by NIST",
+      icon: Building,
+      color: "blue",
+      coverage: 78,
+      controls: 23,
+      compliance: "92%",
+      status: "Active",
+      region: "🇺🇸 US Federal",
+      type: "Risk Framework"
+    },
+    {
+      id: "google-saif",
+      name: "Google SAIF",
+      description: "Secure AI Framework principles and practices",
+      icon: Shield,
+      color: "green",
+      coverage: 72,
+      principles: 6,
+      implementation: "88%",
+      status: "Active",
+      region: "🌍 Global",
+      type: "Governance Principles"
+    },
+    {
+      id: "mitre-atlas",
+      name: "MITRE ATLAS",
+      description: "Adversarial Threat Landscape for AI Systems",
+      icon: Target,
+      color: "orange",
+      coverage: 68,
+      techniques: 14,
+      tactics: 8,
+      status: "Active",
+      region: "🌍 Global",
+      type: "Threat Knowledge Base"
+    },
+    {
+      id: "iso-42001",
+      name: "ISO/IEC 42001",
+      description: "AI Management System international standard",
+      icon: FileText,
+      color: "purple",
+      coverage: 75,
+      requirements: 18,
+      certification: "Pending",
+      status: "Active",
+      region: "🌍 International",
+      type: "Management Standard"
+    }
   ];
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "excellent": return "bg-green-500";
-      case "good": return "bg-blue-500";
-      case "warning": return "bg-yellow-500";
-      default: return "bg-red-500";
+  const stats = [
+    {
+      title: "Total Frameworks",
+      value: "5",
+      change: "+2 this month",
+      icon: Database,
+      color: "blue"
+    },
+    {
+      title: "Avg Compliance",
+      value: "76%",
+      change: "+12% from last month",
+      icon: TrendingUp,
+      color: "green"
+    },
+    {
+      title: "Active Policies",
+      value: "3",
+      change: "2 real-time enabled",
+      icon: Shield,
+      color: "purple"
+    },
+    {
+      title: "Protected Projects",
+      value: "3",
+      change: "All monitored",
+      icon: Users,
+      color: "orange"
+    }
+  ];
+
+  const getFrameworkRoute = (id: string) => {
+    switch (id) {
+      case "owasp": return "/owasp";
+      case "nist": return "/nist";
+      case "google-saif": return "/google-saif";
+      default: return "/policy-mapping";
     }
   };
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "excellent": return <CheckCircle className="h-5 w-5 text-green-600" />;
-      case "good": return <CheckCircle className="h-5 w-5 text-blue-600" />;
-      case "warning": return <AlertTriangle className="h-5 w-5 text-yellow-600" />;
-      default: return <XCircle className="h-5 w-5 text-red-600" />;
-    }
+  const getQuickActions = (framework: any) => {
+    return [
+      { label: "Create Policy", icon: Plus, primary: true },
+      { label: "View Details", icon: Eye, primary: false },
+      { label: "Configure", icon: Settings, primary: false }
+    ];
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      <NavigationBar />
-      
-      <div className="container mx-auto px-6 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <Shield className="h-8 w-8 text-blue-600" />
-            <h1 className="text-4xl font-bold text-gray-900">AI Security Compliance Dashboard</h1>
-          </div>
-          <p className="text-xl text-gray-600">
-            Monitor and manage AI security compliance across OWASP LLM Top 10, NIST AI Framework, and Google SAIF
-          </p>
-        </div>
-
-        {/* Overall Status Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {complianceData.map((item, index) => (
-            <Card key={index} className="hover:shadow-lg transition-shadow duration-300">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{item.framework}</CardTitle>
-                {getStatusIcon(item.status)}
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold mb-2">{item.score}%</div>
-                <Progress value={item.score} className="mb-2" />
-                <Badge variant={item.issues > 3 ? "destructive" : item.issues > 1 ? "default" : "secondary"}>
-                  {item.issues} issues
-                </Badge>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Framework Overview */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          <Card className="hover:shadow-lg transition-shadow duration-300">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                OWASP LLM Top 10
-              </CardTitle>
-              <CardDescription>
-                Security risks specific to Large Language Model applications
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>Critical Issues</span>
-                  <span className="text-red-600 font-semibold">2</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span>Medium Issues</span>
-                  <span className="text-yellow-600 font-semibold">3</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span>Compliance Score</span>
-                  <span className="text-green-600 font-semibold">85%</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-lg transition-shadow duration-300">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                NIST AI Framework
-              </CardTitle>
-              <CardDescription>
-                National Institute of Standards and Technology AI Risk Management
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>Govern Function</span>
-                  <span className="text-blue-600 font-semibold">78%</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span>Map Function</span>
-                  <span className="text-green-600 font-semibold">82%</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span>Measure Function</span>
-                  <span className="text-yellow-600 font-semibold">65%</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-lg transition-shadow duration-300">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                Google SAIF
-              </CardTitle>
-              <CardDescription>
-                Secure AI Framework for enterprise AI systems
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>Security by Design</span>
-                  <span className="text-green-600 font-semibold">92%</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span>Threat Detection</span>
-                  <span className="text-green-600 font-semibold">88%</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span>Response & Recovery</span>
-                  <span className="text-blue-600 font-semibold">90%</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Policy Guardrails Quick View */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Policy Guardrails Status</CardTitle>
-            <CardDescription>
-              Current status of AI safety and security guardrails across your systems
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="p-4 border rounded-lg bg-red-50 border-red-200">
-                <h4 className="font-semibold text-red-800">Prompt Injection</h4>
-                <p className="text-sm text-red-600 mt-1">High Risk Detected</p>
-                <div className="mt-2 text-xs text-red-500">3 vulnerabilities found</div>
-              </div>
-              <div className="p-4 border rounded-lg bg-yellow-50 border-yellow-200">
-                <h4 className="font-semibold text-yellow-800">Bias Detection</h4>
-                <p className="text-sm text-yellow-600 mt-1">Medium Risk</p>
-                <div className="mt-2 text-xs text-yellow-500">2 issues identified</div>
-              </div>
-              <div className="p-4 border rounded-lg bg-orange-50 border-orange-200">
-                <h4 className="font-semibold text-orange-800">Toxicity Filter</h4>
-                <p className="text-sm text-orange-600 mt-1">Needs Attention</p>
-                <div className="mt-2 text-xs text-orange-500">1 configuration issue</div>
-              </div>
-              <div className="p-4 border rounded-lg bg-green-50 border-green-200">
-                <h4 className="font-semibold text-green-800">PII Protection</h4>
-                <p className="text-sm text-green-600 mt-1">Compliant</p>
-                <div className="mt-2 text-xs text-green-500">All checks passed</div>
-              </div>
+    <TooltipProvider>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+        <NavigationBar />
+        
+        <div className="container mx-auto px-6 py-8">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Shield className="h-12 w-12 text-blue-600" />
+              <h1 className="text-5xl font-bold text-gray-900">AI Compliance Dashboard</h1>
             </div>
-          </CardContent>
-        </Card>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Comprehensive AI safety and security framework compliance monitoring with real-time policy management
+            </p>
+          </div>
+
+          {/* Quick Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            {stats.map((stat, index) => (
+              <Card key={index} className="hover:shadow-lg transition-shadow">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600">{stat.title}</p>
+                      <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
+                      <p className="text-sm text-gray-500 mt-1">{stat.change}</p>
+                    </div>
+                    <div className={`p-3 rounded-full bg-${stat.color}-100`}>
+                      <stat.icon className={`h-6 w-6 text-${stat.color}-600`} />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Framework Grid */}
+          <div className="mb-8">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-3xl font-bold text-gray-900">AI Security & Compliance Frameworks</h2>
+              <Link to="/policy-mapping">
+                <Button className="bg-purple-600 hover:bg-purple-700">
+                  <Settings className="h-4 w-4 mr-2" />
+                  Manage Policies
+                </Button>
+              </Link>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {frameworks.map((framework) => (
+                <Card key={framework.id} className="group hover:shadow-xl transition-all duration-300 border-l-4 border-l-gray-200 hover:border-l-blue-500">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-3">
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <div className={`p-3 rounded-lg bg-${framework.color}-100 group-hover:bg-${framework.color}-200 transition-colors`}>
+                              <framework.icon className={`h-6 w-6 text-${framework.color}-600`} />
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{framework.type} - {framework.region}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                        <div>
+                          <CardTitle className="text-lg group-hover:text-blue-600 transition-colors">
+                            {framework.name}
+                          </CardTitle>
+                          <CardDescription className="mt-1">
+                            {framework.description}
+                          </CardDescription>
+                        </div>
+                      </div>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <Badge variant="secondary" className="bg-green-100 text-green-800">
+                            {framework.status}
+                          </Badge>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Framework is actively monitored</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
+                  </CardHeader>
+                  
+                  <CardContent className="space-y-4">
+                    {/* Coverage Progress */}
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm font-medium text-gray-700">Coverage</span>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <span className="text-sm font-bold text-gray-900">{framework.coverage}%</span>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Percentage of framework requirements covered by your policies</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </div>
+                      <Progress value={framework.coverage} className="h-2" />
+                    </div>
+
+                    {/* Framework-specific metrics */}
+                    <div className="grid grid-cols-2 gap-4 py-2">
+                      {framework.id === "owasp" && (
+                        <>
+                          <div className="text-center">
+                            <div className="text-lg font-bold text-red-600">{framework.vulnerabilities}</div>
+                            <div className="text-xs text-gray-500">Total Risks</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-lg font-bold text-orange-600">{framework.criticalIssues}</div>
+                            <div className="text-xs text-gray-500">Critical</div>
+                          </div>
+                        </>
+                      )}
+                      {framework.id === "nist" && (
+                        <>
+                          <div className="text-center">
+                            <div className="text-lg font-bold text-blue-600">{framework.controls}</div>
+                            <div className="text-xs text-gray-500">Controls</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-lg font-bold text-green-600">{framework.compliance}</div>
+                            <div className="text-xs text-gray-500">Compliance</div>
+                          </div>
+                        </>
+                      )}
+                      {framework.id === "google-saif" && (
+                        <>
+                          <div className="text-center">
+                            <div className="text-lg font-bold text-green-600">{framework.principles}</div>
+                            <div className="text-xs text-gray-500">Principles</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-lg font-bold text-blue-600">{framework.implementation}</div>
+                            <div className="text-xs text-gray-500">Implemented</div>
+                          </div>
+                        </>
+                      )}
+                      {framework.id === "mitre-atlas" && (
+                        <>
+                          <div className="text-center">
+                            <div className="text-lg font-bold text-orange-600">{framework.techniques}</div>
+                            <div className="text-xs text-gray-500">Techniques</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-lg font-bold text-red-600">{framework.tactics}</div>
+                            <div className="text-xs text-gray-500">Tactics</div>
+                          </div>
+                        </>
+                      )}
+                      {framework.id === "iso-42001" && (
+                        <>
+                          <div className="text-center">
+                            <div className="text-lg font-bold text-purple-600">{framework.requirements}</div>
+                            <div className="text-xs text-gray-500">Requirements</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-lg font-bold text-yellow-600">{framework.certification}</div>
+                            <div className="text-xs text-gray-500">Status</div>
+                          </div>
+                        </>
+                      )}
+                    </div>
+
+                    {/* Quick Actions */}
+                    <div className="flex gap-2 pt-4 border-t">
+                      {getQuickActions(framework).map((action, idx) => (
+                        <Tooltip key={idx}>
+                          <TooltipTrigger asChild>
+                            <Button
+                              variant={action.primary ? "default" : "outline"}
+                              size="sm"
+                              className="flex-1"
+                              asChild={action.label === "View Details"}
+                            >
+                              {action.label === "View Details" ? (
+                                <Link to={getFrameworkRoute(framework.id)}>
+                                  <action.icon className="h-3 w-3 mr-1" />
+                                  {action.label}
+                                </Link>
+                              ) : action.label === "Create Policy" ? (
+                                <Link to="/policy-mapping">
+                                  <action.icon className="h-3 w-3 mr-1" />
+                                  {action.label}
+                                </Link>
+                              ) : (
+                                <Link to="/policy-mapping">
+                                  <action.icon className="h-3 w-3 mr-1" />
+                                  {action.label}
+                                </Link>
+                              )}
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>
+                              {action.label === "Create Policy" && "Create a new policy based on this framework"}
+                              {action.label === "View Details" && "View detailed framework information and compliance status"}
+                              {action.label === "Configure" && "Configure framework-specific settings and mappings"}
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          {/* Quick Actions Section */}
+          <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
+            <CardHeader>
+              <CardTitle className="text-2xl text-blue-900">Quick Actions</CardTitle>
+              <CardDescription>Get started with AI compliance and security</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Link to="/policy-mapping">
+                  <Button className="w-full h-16 bg-blue-600 hover:bg-blue-700 text-left justify-start">
+                    <div className="flex items-center gap-4">
+                      <Plus className="h-6 w-6" />
+                      <div>
+                        <div className="font-semibold">Create New Policy</div>
+                        <div className="text-sm opacity-90">Set up AI safety guardrails</div>
+                      </div>
+                    </div>
+                  </Button>
+                </Link>
+                
+                <Link to="/policy-mapping">
+                  <Button variant="outline" className="w-full h-16 text-left justify-start border-2">
+                    <div className="flex items-center gap-4">
+                      <Search className="h-6 w-6" />
+                      <div>
+                        <div className="font-semibold">Framework Explorer</div>
+                        <div className="text-sm text-gray-600">Browse all compliance frameworks</div>
+                      </div>
+                    </div>
+                  </Button>
+                </Link>
+                
+                <Link to="/policy-mapping">
+                  <Button variant="outline" className="w-full h-16 text-left justify-start border-2">
+                    <div className="flex items-center gap-4">
+                      <Globe className="h-6 w-6" />
+                      <div>
+                        <div className="font-semibold">Real-time Protection</div>
+                        <div className="text-sm text-gray-600">Configure live monitoring</div>
+                      </div>
+                    </div>
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
-    </div>
+    </TooltipProvider>
   );
 };
 

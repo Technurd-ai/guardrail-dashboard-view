@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -22,7 +23,8 @@ import {
   Code,
   Lock,
   Zap,
-  Activity
+  Activity,
+  Link2
 } from "lucide-react";
 
 const OwaspDashboard = () => {

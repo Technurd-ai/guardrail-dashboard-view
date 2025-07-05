@@ -1,327 +1,494 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import NavigationBar from "@/components/NavigationBar";
-import { Shield, Lock, Eye, Wrench, AlertTriangle, CheckCircle } from "lucide-react";
+import { Link } from "react-router-dom";
+import { 
+  Shield, 
+  AlertTriangle, 
+  Building, 
+  Eye, 
+  TrendingUp, 
+  Users, 
+  Globe, 
+  Database,
+  Target,
+  FileText,
+  Settings,
+  Plus,
+  ExternalLink,
+  CheckCircle,
+  Activity,
+  Lock,
+  Zap
+} from "lucide-react";
 
 const GoogleSaifDashboard = () => {
-  const saifPillars = [
+  const saifPrinciples = [
     {
       id: "secure-by-design",
-      title: "Secure by Design",
-      description: "Build security into AI systems from the ground up",
-      compliance: 92,
+      name: "Secure by Design",
+      description: "Incorporate security considerations from the outset",
       icon: Lock,
-      principles: [
-        { name: "Security from inception", status: "Implemented", score: 95 },
-        { name: "Secure development lifecycle", status: "Implemented", score: 90 },
-        { name: "Security architecture review", status: "Implemented", score: 88 },
-        { name: "Threat modeling", status: "In Progress", score: 85 },
-        { name: "Secure coding practices", status: "Implemented", score: 98 }
-      ],
-      keyControls: [
-        "Multi-layered security architecture",
-        "Zero-trust access controls", 
-        "Encryption at rest and in transit",
-        "Secure API design",
-        "Regular security reviews"
-      ]
+      color: "blue",
+      coverage: 92,
+      owaspMapping: "LLM03 - Excessive Agency",
+      mitreMapping: "AML.T0048 - Societal Harm",
+      isoMapping: "A.14.2.5 - Secure system engineering",
+      nistMapping: "GV.1 - AI Risk Management"
     },
     {
       id: "secure-by-default",
-      title: "Secure by Default", 
-      description: "Default configurations prioritize security over convenience",
-      compliance: 88,
+      name: "Secure by Default",
+      description: "Implement secure configurations as the standard",
       icon: Shield,
-      principles: [
-        { name: "Default security settings", status: "Implemented", score: 90 },
-        { name: "Minimal permissions", status: "Implemented", score: 85 },
-        { name: "Secure communication", status: "Implemented", score: 92 },
-        { name: "Data protection defaults", status: "Implemented", score: 88 },
-        { name: "Audit logging enabled", status: "In Progress", score: 82 }
-      ],
-      keyControls: [
-        "Principle of least privilege",
-        "Automatic security updates",
-        "Default encryption enabled",
-        "Secure configuration baselines",
-        "Comprehensive logging"
-      ]
+      color: "green",
+      coverage: 88,
+      owaspMapping: "LLM02 - Insecure Output Handling",
+      mitreMapping: "AML.T0049 - Amplifying Biases",
+      isoMapping: "A.8.2.3 - Handling of assets",
+      nistMapping: "GV.3 - AI Risk Tolerance"
     },
     {
       id: "secure-deployment",
-      title: "Secure Deployment",
-      description: "Maintain security throughout the deployment lifecycle", 
-      compliance: 90,
-      icon: Wrench,
-      principles: [
-        { name: "Deployment security checks", status: "Implemented", score: 88 },
-        { name: "Environment hardening", status: "Implemented", score: 92 },
-        { name: "Continuous monitoring", status: "Implemented", score: 90 },
-        { name: "Incident response", status: "Implemented", score: 85 },
-        { name: "Recovery procedures", status: "Implemented", score: 95 }
-      ],
-      keyControls: [
-        "Automated security testing",
-        "Infrastructure as code",
-        "Container security",
-        "Network segmentation", 
-        "Backup and recovery"
-      ]
+      name: "Secure Deployment",
+      description: "Ensure security throughout the deployment lifecycle",
+      icon: CheckCircle,
+      color: "purple",
+      coverage: 95,
+      owaspMapping: "LLM07 - Insufficient Data Validation",
+      mitreMapping: "AML.T0024 - Exfiltration via ML Model",
+      isoMapping: "A.18.1.4 - Privacy and protection of PII",
+      nistMapping: "MS.1 - Risk Measurement"
     },
     {
       id: "understand-limitations",
-      title: "Understand Limitations",
-      description: "Acknowledge and address AI system limitations and risks",
-      compliance: 85,
+      name: "Understand Limitations",
+      description: "Acknowledge and address the limitations of AI systems",
+      icon: AlertTriangle,
+      color: "orange",
+      coverage: 85,
+      owaspMapping: "LLM01 - Prompt Injection",
+      mitreMapping: "AML.T0051 - LLM Prompt Injection",
+      isoMapping: "A.12.2.1 - Controls against malware",
+      nistMapping: "MG.1 - Risk Response"
+    },
+    {
+      id: "privacy-first",
+      name: "Privacy First",
+      description: "Prioritize privacy and data protection",
       icon: Eye,
-      principles: [
-        { name: "Model limitations documented", status: "Implemented", score: 88 },
-        { name: "Bias assessment", status: "In Progress", score: 78 },
-        { name: "Performance boundaries", status: "Implemented", score: 90 },
-        { name: "Failure mode analysis", status: "In Progress", score: 80 },
-        { name: "User education", status: "Implemented", score: 89 }
-      ],
-      keyControls: [
-        "Regular model evaluation",
-        "Bias detection and mitigation",
-        "Performance monitoring",
-        "User training programs",
-        "Clear usage guidelines"
-      ]
+      color: "red",
+      coverage: 90,
+      owaspMapping: "LLM06 - Sensitive Information Disclosure",
+      mitreMapping: "AML.T0025 - Data from ML Model Repository",
+      isoMapping: "A.9.2.1 - Information handling and storage",
+      nistMapping: "GV.4 - AI Data Management"
+    },
+    {
+      id: "human-centered",
+      name: "Human-Centered",
+      description: "Keep human oversight and control in AI systems",
+      icon: Users,
+      color: "blue",
+      coverage: 80,
+      owaspMapping: "LLM09 - Overreliance",
+      mitreMapping: "AML.T0048 - Societal Harm",
+      isoMapping: "A.6.1.1 - Information security roles",
+      nistMapping: "MG.2 - Risk Treatment"
     }
   ];
 
-  const threatCategories = [
+  const stats = [
     {
-      category: "Adversarial Attacks",
-      risk: "High",
-      status: "Mitigated",
-      description: "Protection against adversarial inputs and model attacks"
+      title: "Principles Implemented",
+      value: "6",
+      change: "All active",
+      icon: Shield,
+      color: "green"
     },
     {
-      category: "Data Poisoning", 
-      risk: "Medium",
-      status: "Monitored",
-      description: "Detection and prevention of training data manipulation"
+      title: "Framework Coverage",
+      value: "88%",
+      change: "+10% from last month",
+      icon: TrendingUp,
+      color: "blue"
     },
     {
-      category: "Model Extraction",
-      risk: "Medium", 
-      status: "Mitigated",
-      description: "Protection against model theft and reverse engineering"
+      title: "Active Policies",
+      value: "4",
+      change: "3 real-time enabled",
+      icon: Lock,
+      color: "purple"
     },
     {
-      category: "Privacy Attacks",
-      risk: "High",
-      status: "Mitigated", 
-      description: "Protection against membership inference and data reconstruction"
+      title: "Protected Projects",
+      value: "5",
+      change: "All monitored",
+      icon: Users,
+      color: "orange"
     }
   ];
 
-  const getComplianceColor = (score: number) => {
-    if (score >= 90) return "text-green-600";
-    if (score >= 80) return "text-blue-600";
-    if (score >= 70) return "text-yellow-600";
-    return "text-red-600";
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "Implemented": return "bg-green-100 text-green-800 border-green-200";
-      case "In Progress": return "bg-yellow-100 text-yellow-800 border-yellow-200";
-      case "Mitigated": return "bg-green-100 text-green-800 border-green-200";
-      case "Monitored": return "bg-blue-100 text-blue-800 border-blue-200";
-      default: return "bg-gray-100 text-gray-800 border-gray-200";
+  const frameworkEcosystem = [
+    {
+      id: "google-saif",
+      name: "Google SAIF",
+      description: "Secure AI Framework principles and practices",
+      icon: Shield,
+      color: "green",
+      coverage: 90,
+      principles: 6,
+      implementation: "95%",
+      status: "Primary Framework",
+      region: "🌍 Global",
+      type: "Governance Principles"
+    },
+    {
+      id: "nist",
+      name: "NIST AI RMF",
+      description: "AI Risk Management Framework by NIST",
+      icon: Building,
+      color: "blue",
+      coverage: 85,
+      controls: 23,
+      compliance: "88%",
+      status: "Risk Aligned",
+      region: "🇺🇸 US Federal",
+      type: "Risk Framework"
+    },
+    {
+      id: "iso-42001",
+      name: "ISO/IEC 42001",
+      description: "AI Management System international standard",
+      icon: FileText,
+      color: "purple",
+      coverage: 82,
+      requirements: 18,
+      certification: "Compliant",
+      status: "Standards Aligned",
+      region: "🌍 International",
+      type: "Management Standard"
+    },
+    {
+      id: "mitre-atlas",
+      name: "MITRE ATLAS",
+      description: "Adversarial Threat Landscape for AI Systems",
+      icon: Target,
+      color: "orange",
+      coverage: 78,
+      techniques: 14,
+      tactics: 8,
+      status: "Threat Informed",
+      region: "🌍 Global",
+      type: "Threat Intelligence"
+    },
+    {
+      id: "owasp",
+      name: "OWASP LLM Top 10",
+      description: "Critical security risks for Large Language Models",
+      icon: AlertTriangle,
+      color: "red",
+      coverage: 88,
+      vulnerabilities: 10,
+      criticalIssues: 3,
+      status: "Security Enhanced",
+      region: "🌍 Global",
+      type: "Security Framework"
     }
-  };
-
-  const getRiskBadgeVariant = (risk: string) => {
-    switch (risk) {
-      case "High": return "destructive" as const;
-      case "Medium": return "default" as const;
-      case "Low": return "secondary" as const;
-      default: return "secondary" as const;
-    }
-  };
+  ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      <NavigationBar />
-      
-      <div className="container mx-auto px-6 py-8">
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <Shield className="h-8 w-8 text-green-600" />
-            <h1 className="text-4xl font-bold text-gray-900">Google SAIF Framework</h1>
+    <TooltipProvider>
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50">
+        <NavigationBar />
+        
+        <div className="container mx-auto px-6 py-8">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Shield className="h-12 w-12 text-green-600" />
+              <h1 className="text-5xl font-bold text-gray-900">Google Secure AI Framework</h1>
+            </div>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Comprehensive AI security principles with multi-framework integration and best practices
+            </p>
           </div>
-          <p className="text-xl text-gray-600">
-            Secure AI Framework - Google's approach to AI security across the full AI lifecycle
-          </p>
-        </div>
 
-        {/* Overall SAIF Compliance */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Overall SAIF Compliance</CardTitle>
-            <CardDescription>Security posture across all SAIF pillars</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-              {saifPillars.map((pillar) => (
-                <div key={pillar.id} className="text-center p-4 border rounded-lg">
-                  <pillar.icon className="h-8 w-8 mx-auto mb-2 text-green-600" />
-                  <div className={`text-3xl font-bold ${getComplianceColor(pillar.compliance)}`}>
-                    {pillar.compliance}%
+          {/* Framework Ecosystem Overview */}
+          <Card className="mb-8 border-l-4 border-l-green-500">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Activity className="h-5 w-5 text-green-600" />
+                Framework Ecosystem Integration
+              </CardTitle>
+              <CardDescription>How Google SAIF principles integrate with global AI security and governance frameworks</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+                {frameworkEcosystem.map((framework) => (
+                  <div key={framework.id} className="text-center p-6 border rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow">
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <div className={`p-3 rounded-lg bg-${framework.color}-100 mb-3 mx-auto w-fit`}>
+                          <framework.icon className={`h-6 w-6 text-${framework.color}-600`} />
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <div className="max-w-xs">
+                          <p className="font-semibold">{framework.name}</p>
+                          <p className="text-sm mt-1">{framework.description}</p>
+                          <p className="text-xs mt-2">Region: {framework.region}</p>
+                          <p className="text-xs">Type: {framework.type}</p>
+                          <p className="text-xs mt-1">Status: {framework.status}</p>
+                        </div>
+                      </TooltipContent>
+                    </Tooltip>
+                    <div className={`text-2xl font-bold text-${framework.color}-600 mb-2`}>
+                      {framework.coverage}%
+                    </div>
+                    <div className="text-sm font-medium text-gray-900 mb-3">{framework.name}</div>
+                    <Progress value={framework.coverage} className="h-2 mb-2" />
+                    <Badge variant="outline" className="text-xs">
+                      {framework.status}
+                    </Badge>
                   </div>
-                  <div className="text-sm text-gray-600">{pillar.title}</div>
-                </div>
-              ))}
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-green-600 mb-2">89%</div>
-              <div className="text-lg text-gray-600">Overall SAIF Compliance</div>
-              <Badge variant="default" className="mt-2">Excellent Security Posture</Badge>
-            </div>
-          </CardContent>
-        </Card>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
 
-        {/* SAIF Pillars Detail */}
-        <div className="space-y-8">
-          {saifPillars.map((pillar) => (
-            <Card key={pillar.id} className="hover:shadow-lg transition-shadow duration-300">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <pillar.icon className="h-6 w-6 text-green-600" />
+          {/* Quick Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            {stats.map((stat, index) => (
+              <Card key={index} className="hover:shadow-lg transition-shadow">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
                     <div>
-                      <CardTitle className="text-xl">{pillar.title}</CardTitle>
-                      <CardDescription className="mt-1">{pillar.description}</CardDescription>
+                      <p className="text-sm font-medium text-gray-600">{stat.title}</p>
+                      <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
+                      <p className="text-sm text-gray-500 mt-1">{stat.change}</p>
+                    </div>
+                    <div className={`p-3 rounded-full bg-${stat.color}-100`}>
+                      <stat.icon className={`h-6 w-6 text-${stat.color}-600`} />
                     </div>
                   </div>
-                  <div className="text-right">
-                    <div className={`text-2xl font-bold ${getComplianceColor(pillar.compliance)}`}>
-                      {pillar.compliance}%
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* SAIF Principles Grid */}
+          <div className="mb-8">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-3xl font-bold text-gray-900">SAIF Principles & Framework Integration</h2>
+              <div className="flex gap-3">
+                <Link to="/policy-mapping">
+                  <Button className="bg-green-600 hover:bg-green-700">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Create SAIF Policy
+                  </Button>
+                </Link>
+                <Button variant="outline">
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  SAIF Guide
+                </Button>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {saifPrinciples.map((principle) => (
+                <Card key={principle.id} className="group hover:shadow-xl transition-all duration-300 border-l-4 border-l-green-200 hover:border-l-green-500">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-3">
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <div className={`p-3 rounded-lg bg-${principle.color}-100 group-hover:bg-${principle.color}-200 transition-colors`}>
+                              <principle.icon className={`h-6 w-6 text-${principle.color}-600`} />
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <div className="max-w-xs">
+                              <p className="font-semibold">{principle.name}</p>
+                              <p className="text-sm mt-1">{principle.description}</p>
+                              <div className="mt-2 pt-2 border-t">
+                                <p className="text-xs font-medium">Framework Alignment:</p>
+                                <p className="text-xs">MITRE ATLAS: {principle.mitreMapping}</p>
+                                <p className="text-xs">ISO 42001: {principle.isoMapping}</p>
+                              </div>
+                            </div>
+                          </TooltipContent>
+                        </Tooltip>
+                        <div>
+                          <CardTitle className="text-lg group-hover:text-green-600 transition-colors">
+                            {principle.name}
+                          </CardTitle>
+                          <CardDescription className="mt-1">
+                            {principle.description}
+                          </CardDescription>
+                        </div>
+                      </div>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <Badge variant="secondary" className="bg-green-100 text-green-800">
+                            {principle.coverage}%
+                          </Badge>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Policy Coverage: {principle.coverage}%</p>
+                        </TooltipContent>
+                      </Tooltip>
                     </div>
-                    <CheckCircle className="h-5 w-5 text-green-600 mx-auto mt-1" />
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  <Progress value={pillar.compliance} className="h-3" />
+                  </CardHeader>
                   
-                  {/* Principles */}
-                  <div>
-                    <h4 className="font-semibold mb-3">Security Principles</h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {pillar.principles.map((principle, idx) => (
-                        <div key={idx} className="p-3 border rounded-lg bg-white">
-                          <div className="flex items-center justify-between mb-2">
-                            <h5 className="font-medium text-sm">{principle.name}</h5>
-                            <span className={`text-xs font-bold ${getComplianceColor(principle.score)}`}>
-                              {principle.score}%
-                            </span>
-                          </div>
-                          <div className={`px-2 py-1 rounded text-xs font-medium border ${getStatusColor(principle.status)}`}>
-                            {principle.status}
-                          </div>
-                          <Progress value={principle.score} className="h-1 mt-2" />
-                        </div>
-                      ))}
+                  <CardContent className="space-y-4">
+                    {/* Coverage Progress */}
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm font-medium text-gray-700">Implementation</span>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <span className="text-sm font-bold text-gray-900">{principle.coverage}%</span>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Percentage of principle implemented</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </div>
+                      <Progress value={principle.coverage} className="h-2" />
                     </div>
-                  </div>
 
-                  {/* Key Controls */}
-                  <div>
-                    <h4 className="font-semibold mb-3">Key Security Controls</h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                      {pillar.keyControls.map((control, idx) => (
-                        <div key={idx} className="flex items-center gap-2 text-sm">
-                          <CheckCircle className="h-4 w-4 text-green-600 flex-shrink-0" />
-                          {control}
-                        </div>
-                      ))}
+                    {/* Framework Mappings */}
+                    <div className="grid grid-cols-2 gap-2">
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <div className="text-center p-2 bg-orange-50 rounded border">
+                            <div className="text-sm font-bold text-orange-600">MITRE</div>
+                            <div className="text-xs text-gray-600">Mapped</div>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>MITRE ATLAS Mapping: {principle.mitreMapping}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                      
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <div className="text-center p-2 bg-purple-50 rounded border">
+                            <div className="text-sm font-bold text-purple-600">ISO</div>
+                            <div className="text-xs text-gray-600">Aligned</div>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>ISO/IEC 42001 Control: {principle.isoMapping}</p>
+                        </TooltipContent>
+                      </Tooltip>
                     </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
 
-        {/* Threat Landscape */}
-        <Card className="mt-8">
-          <CardHeader>
-            <CardTitle>AI Threat Landscape</CardTitle>
-            <CardDescription>Current threat categories and mitigation status</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {threatCategories.map((threat, idx) => (
-                <div key={idx} className="p-4 border rounded-lg bg-white">
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-semibold">{threat.category}</h4>
-                    <Badge variant={getRiskBadgeVariant(threat.risk)}>{threat.risk} Risk</Badge>
-                  </div>
-                  <p className="text-sm text-gray-600 mb-3">{threat.description}</p>
-                  <div className={`px-3 py-1 rounded-md text-sm font-medium border ${getStatusColor(threat.status)}`}>
-                    Status: {threat.status}
-                  </div>
-                </div>
+                    {/* Quick Actions */}
+                    <div className="flex gap-2 pt-4 border-t">
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button size="sm" className="flex-1" asChild>
+                            <Link to="/policy-mapping">
+                              <Plus className="h-3 w-3 mr-1" />
+                              Create Policy
+                            </Link>
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Create a policy to enforce {principle.name}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                      
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button variant="outline" size="sm" className="flex-1">
+                            <Settings className="h-3 w-3 mr-1" />
+                            Configure
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Configure settings for {principle.name}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                      
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button variant="outline" size="sm" className="flex-1">
+                            <Eye className="h-3 w-3 mr-1" />
+                            Details
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>View detailed information about {principle.name}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
+                  </CardContent>
+                </Card>
               ))}
             </div>
-          </CardContent>
-        </Card>
+          </div>
 
-        {/* Security Recommendations */}
-        <Card className="mt-8">
-          <CardHeader>
-            <CardTitle>Security Enhancement Recommendations</CardTitle>
-            <CardDescription>Priority actions to further strengthen SAIF implementation</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <h4 className="font-semibold mb-3 text-blue-700">Improvement Opportunities</h4>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex items-start gap-2">
-                    <AlertTriangle className="h-4 w-4 text-blue-500 flex-shrink-0 mt-0.5" />
-                    Complete bias assessment processes (78%)
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <AlertTriangle className="h-4 w-4 text-blue-500 flex-shrink-0 mt-0.5" />
-                    Enhance failure mode analysis (80%)
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <AlertTriangle className="h-4 w-4 text-blue-500 flex-shrink-0 mt-0.5" />
-                    Improve audit logging coverage (82%)
-                  </li>
-                </ul>
+          {/* Multi-Framework Policy Creation Center */}
+          <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
+            <CardHeader>
+              <CardTitle className="text-2xl text-green-900">Secure AI Framework Integration Hub</CardTitle>
+              <CardDescription>Create comprehensive policies combining SAIF principles with global standards</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Link to="/policy-mapping">
+                  <Button className="w-full h-16 bg-green-600 hover:bg-green-700 text-left justify-start">
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-1">
+                        <Shield className="h-5 w-5" />
+                        <FileText className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <div className="font-semibold">SAIF + ISO 42001</div>
+                        <div className="text-sm opacity-90">Security + Management</div>
+                      </div>
+                    </div>
+                  </Button>
+                </Link>
+                
+                <Link to="/policy-mapping">
+                  <Button variant="outline" className="w-full h-16 text-left justify-start border-2">
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-1">
+                        <Shield className="h-5 w-5" />
+                        <Target className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <div className="font-semibold">SAIF + MITRE ATLAS</div>
+                        <div className="text-sm text-gray-600">Security + Threat Intelligence</div>
+                      </div>
+                    </div>
+                  </Button>
+                </Link>
+                
+                <Link to="/policy-mapping">
+                  <Button variant="outline" className="w-full h-16 text-left justify-start border-2">
+                    <div className="flex items-center gap-4">
+                      <Globe className="h-6 w-6" />
+                      <div>
+                        <div className="font-semibold">Complete Framework</div>
+                        <div className="text-sm text-gray-600">All frameworks unified</div>
+                      </div>
+                    </div>
+                  </Button>
+                </Link>
               </div>
-              <div>
-                <h4 className="font-semibold mb-3 text-green-700">Best Practices</h4>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0 mt-0.5" />
-                    Excellent secure coding practices (98%)
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0 mt-0.5" />
-                    Strong recovery procedures (95%)
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0 mt-0.5" />
-                    Robust environment hardening (92%)
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
       </div>
-    </div>
+    </TooltipProvider>
   );
 };
 

@@ -1,464 +1,493 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import NavigationBar from "@/components/NavigationBar";
-import { AlertTriangle, Shield, Eye, Lock, Database, Code, Users, FileText, Zap, Bug, Settings, Plus, Info } from "lucide-react";
+import { Link } from "react-router-dom";
+import { 
+  Shield, 
+  AlertTriangle, 
+  Building, 
+  Eye, 
+  TrendingUp, 
+  Users, 
+  Globe, 
+  Database,
+  Target,
+  FileText,
+  Settings,
+  Plus,
+  ExternalLink,
+  Code,
+  Lock,
+  Zap,
+  Activity
+} from "lucide-react";
 
 const OwaspDashboard = () => {
-  const owaspTop10 = [
+  const vulnerabilities = [
     {
-      id: "LLM01",
-      title: "Prompt Injection",
-      description: "Manipulating LLM through crafted inputs to cause unintended actions",
-      riskLevel: "Critical",
-      status: "Vulnerable",
-      compliance: 45,
+      id: "llm01",
+      name: "Prompt Injection",
+      description: "Manipulating the model through crafted prompts",
+      detailedDescription: "Exploiting vulnerabilities by injecting malicious prompts that alter the model's behavior, leading to unauthorized actions or information disclosure.",
+      severity: "Critical",
+      likelihood: "High",
+      impact: "Critical",
+      exploitability: "High",
+      riskScore: 9.5,
+      color: "red",
       icon: Code,
-      examples: ["Direct prompt injection", "Indirect prompt injection via external sources"],
-      mitigations: ["Input validation", "Privilege controls", "Segregation of external content"],
-      impact: "Complete system compromise, data theft, unauthorized actions",
-      detectability: "Difficult to detect without proper monitoring",
-      exploitability: "High - can be exploited with crafted prompts",
-      technicalDetails: "Occurs when untrusted input is used to modify the LLM's behavior through prompt manipulation"
+      mitreMapping: "T0051 - LLM Prompt Injection",
+      isoMapping: "A.14.2.5 - Secure system engineering"
     },
     {
-      id: "LLM02", 
-      title: "Insecure Output Handling",
-      description: "Insufficient validation of LLM outputs before downstream use",
-      riskLevel: "High",
-      status: "Needs Review", 
-      compliance: 70,
-      icon: FileText,
-      examples: ["Cross-site scripting", "Code injection", "Server-side request forgery"],
-      mitigations: ["Output encoding", "Input validation", "Zero-trust approach"],
-      impact: "Code execution, data manipulation, system compromise",
-      detectability: "Medium - can be detected through output analysis",
-      exploitability: "Medium - requires specific output conditions",
-      technicalDetails: "LLM outputs are treated as trusted content without proper validation or encoding"
-    },
-    {
-      id: "LLM03",
-      title: "Training Data Poisoning", 
-      description: "Manipulating training data to introduce vulnerabilities or biases",
-      riskLevel: "High",
-      status: "Compliant",
-      compliance: 85,
-      icon: Database,
-      examples: ["Backdoor attacks", "Data poisoning", "Model manipulation"],
-      mitigations: ["Data validation", "Anomaly detection", "Secure data sources"],
-      impact: "Model behavior manipulation, biased outputs, backdoor activation",
-      detectability: "Very difficult - requires deep model analysis",
-      exploitability: "Low - requires access to training pipeline",
-      technicalDetails: "Malicious data introduced during training phase to compromise model integrity"
-    },
-    {
-      id: "LLM04",
-      title: "Model Denial of Service",
-      description: "Causing resource exhaustion through resource-heavy operations", 
-      riskLevel: "Medium",
-      status: "Compliant",
-      compliance: 90,
-      icon: Zap,
-      examples: ["Resource exhaustion", "Queue flooding", "Variable-length inputs"],
-      mitigations: ["Rate limiting", "Resource monitoring", "Input validation"],
-      impact: "Service unavailability, performance degradation, increased costs",
-      detectability: "Easy - through resource monitoring",
-      exploitability: "High - simple to execute with large inputs",
-      technicalDetails: "Attackers send resource-intensive queries to overwhelm the LLM service"
-    },
-    {
-      id: "LLM05",
-      title: "Supply Chain Vulnerabilities",
-      description: "Vulnerabilities in third-party datasets, models, or platforms",
-      riskLevel: "Medium", 
-      status: "Needs Review",
-      compliance: 65,
-      icon: Shield,
-      examples: ["Compromised pre-trained models", "Malicious plugins", "Outdated components"],
-      mitigations: ["Model verification", "Regular updates", "Security scanning"],
-      impact: "Inherited vulnerabilities, compromised model behavior, supply chain attacks",
-      detectability: "Medium - requires security scanning and verification",
-      exploitability: "Medium - depends on supply chain compromise",
-      technicalDetails: "Vulnerabilities inherited from third-party components, models, or training data"
-    },
-    {
-      id: "LLM06",
-      title: "Sensitive Information Disclosure",
-      description: "LLM inadvertently revealing confidential data in outputs",
-      riskLevel: "High",
-      status: "Vulnerable", 
-      compliance: 40,
+      id: "llm02",
+      name: "Insecure Output Handling",
+      description: "Failing to validate or sanitize model outputs",
+      detailedDescription: "Neglecting to validate or sanitize the outputs from the LLM, which can lead to the execution of unintended code or commands, data breaches, or system compromise.",
+      severity: "High",
+      likelihood: "Medium",
+      impact: "High",
+      exploitability: "Medium",
+      riskScore: 7.8,
+      color: "orange",
       icon: Eye,
-      examples: ["Training data leakage", "PII exposure", "Confidential information"],
-      mitigations: ["Data sanitization", "Output filtering", "Access controls"],
-      impact: "Privacy violations, regulatory non-compliance, data breaches",
-      detectability: "Medium - requires output monitoring",
-      exploitability: "Medium - requires specific prompting techniques",
-      technicalDetails: "Model memorizes and reproduces sensitive information from training data"
+      mitreMapping: "T0048 - Societal Harm",
+      isoMapping: "A.8.2.3 - Handling of assets"
     },
     {
-      id: "LLM07",
-      title: "Insecure Plugin Design",
-      description: "LLM plugins lacking proper access controls and validation",
-      riskLevel: "High",
-      status: "Needs Review",
-      compliance: 60,
-      icon: Bug,
-      examples: ["Insufficient access control", "Input validation gaps", "Privilege escalation"],
-      mitigations: ["Strict input validation", "Access controls", "Plugin sandboxing"],
-      impact: "Unauthorized access, privilege escalation, system compromise",
-      detectability: "Medium - through security testing",
-      exploitability: "Medium - requires plugin interaction",
-      technicalDetails: "Plugins extend LLM capabilities but may introduce security vulnerabilities"
+      id: "llm03",
+      name: "Training Data Poisoning",
+      description: "Compromising model integrity through data manipulation",
+      detailedDescription: "Introducing malicious data into the training dataset, which can bias the model's behavior, cause it to produce incorrect or harmful outputs, or create backdoors for later exploitation.",
+      severity: "Critical",
+      likelihood: "Low",
+      impact: "Critical",
+      exploitability: "Low",
+      riskScore: 8.2,
+      color: "red",
+      icon: Database,
+      mitreMapping: "T0025 - Data from ML Model Repository",
+      isoMapping: "A.11.2.1 - Information handling procedures"
     },
     {
-      id: "LLM08", 
-      title: "Excessive Agency",
-      description: "LLM systems granted excessive functionality or permissions",
-      riskLevel: "Medium",
-      status: "Compliant",
-      compliance: 80,
-      icon: Users,
-      examples: ["Unrestricted functionality", "Excessive permissions", "Lack of human oversight"],
-      mitigations: ["Principle of least privilege", "Human oversight", "Functionality limits"],
-      impact: "Unintended actions, system damage, unauthorized operations",
-      detectability: "Medium - through permission auditing",
-      exploitability: "Low - requires specific conditions",
-      technicalDetails: "LLM systems given more autonomy and permissions than necessary for their function"
-    },
-    {
-      id: "LLM09",
-      title: "Overreliance",
-      description: "Systems or people over-relying on LLM outputs without oversight",
-      riskLevel: "Medium", 
-      status: "Needs Review",
-      compliance: 75,
-      icon: AlertTriangle,
-      examples: ["Automation bias", "Lack of verification", "Critical decision dependency"],
-      mitigations: ["Human verification", "Output validation", "Fallback mechanisms"],
-      impact: "Poor decision making, system failures, loss of human expertise",
-      detectability: "Difficult - requires process analysis",
-      exploitability: "Low - indirect exploitation through poor decisions",
-      technicalDetails: "Excessive trust in LLM outputs without proper human oversight or validation"
-    },
-    {
-      id: "LLM10",
-      title: "Model Theft",
-      description: "Unauthorized access to proprietary LLM models",
-      riskLevel: "Medium",
-      status: "Compliant", 
-      compliance: 88,
+      id: "llm04",
+      name: "Inadequate Access Controls",
+      description: "Insufficiently restricting access to the LLM",
+      detailedDescription: "Failing to implement proper access controls, allowing unauthorized users or systems to interact with the LLM, potentially leading to data breaches, system compromise, or misuse of the model.",
+      severity: "High",
+      likelihood: "Medium",
+      impact: "High",
+      exploitability: "Medium",
+      riskScore: 7.5,
+      color: "orange",
       icon: Lock,
-      examples: ["Model extraction", "Side-channel attacks", "Unauthorized access"],
-      mitigations: ["Access controls", "Model obfuscation", "Monitoring and logging"],
-      impact: "IP theft, competitive disadvantage, unauthorized model replication",
-      detectability: "Medium - through access monitoring",
-      exploitability: "Low - requires significant resources",
-      technicalDetails: "Attackers attempt to steal or replicate proprietary model weights and architecture"
+      mitreMapping: "T0024 - Exfiltration via ML Model",
+      isoMapping: "A.9.2.1 - Management of access rights"
+    },
+    {
+      id: "llm05",
+      name: "Supply Chain Vulnerabilities",
+      description: "Exploiting weaknesses in third-party components",
+      detailedDescription: "Utilizing vulnerable third-party libraries, models, or services in the LLM's supply chain, which can introduce security flaws, backdoors, or malicious functionality into the system.",
+      severity: "Medium",
+      likelihood: "Medium",
+      impact: "Medium",
+      exploitability: "Medium",
+      riskScore: 6.8,
+      color: "yellow",
+      icon: Link2,
+      mitreMapping: "T0019 - Data Manipulation",
+      isoMapping: "A.15.1.1 - Information security policy for supplier relationships"
     }
   ];
 
-  const handleCreatePolicy = (vulnId: string) => {
-    console.log(`Creating policy for ${vulnId}`);
-    // Navigate to policy creation with pre-filled vulnerability
-  };
-
-  const handleConfigureGuardrails = (vulnId: string) => {
-    console.log(`Configuring guardrails for ${vulnId}`);
-    // Navigate to guardrail configuration
-  };
-
-  const handleViewDetails = (vulnId: string) => {
-    console.log(`Viewing details for ${vulnId}`);
-    // Show detailed vulnerability information
-  };
-
-  const getRiskColor = (risk: string) => {
-    switch (risk) {
-      case "Critical": return "destructive";
-      case "High": return "destructive"; 
-      case "Medium": return "default";
-      default: return "secondary";
+  const stats = [
+    {
+      title: "Total Vulnerabilities",
+      value: vulnerabilities.length.toString(),
+      change: "+1 this month",
+      icon: AlertTriangle,
+      color: "red"
+    },
+    {
+      title: "Critical Risks",
+      value: vulnerabilities.filter(v => v.severity === "Critical").length.toString(),
+      change: "+0",
+      icon: AlertTriangle,
+      color: "red"
+    },
+    {
+      title: "Average Risk Score",
+      value: (vulnerabilities.reduce((acc, v) => acc + v.riskScore, 0) / vulnerabilities.length).toFixed(1),
+      change: "+0.2",
+      icon: TrendingUp,
+      color: "orange"
+    },
+    {
+      title: "Policies Enabled",
+      value: "3",
+      change: "+1 real-time",
+      icon: Shield,
+      color: "green"
     }
-  };
+  ];
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "Vulnerable": return "bg-red-100 text-red-800 border-red-200";
-      case "Needs Review": return "bg-yellow-100 text-yellow-800 border-yellow-200";
-      case "Compliant": return "bg-green-100 text-green-800 border-green-200";
-      default: return "bg-gray-100 text-gray-800 border-gray-200";
+  const frameworkComparison = [
+    {
+      id: "owasp",
+      name: "OWASP LLM Top 10",
+      description: "Critical security risks for Large Language Models",
+      icon: AlertTriangle,
+      color: "red",
+      coverage: 90,
+      vulnerabilities: 10,
+      criticalIssues: 3,
+      status: "Primary Framework",
+      region: "🌍 Global",
+      type: "Security Framework"
+    },
+    {
+      id: "mitre-atlas",
+      name: "MITRE ATLAS",
+      description: "Adversarial Threat Landscape for AI Systems",
+      icon: Target,
+      color: "orange",
+      coverage: 85,
+      techniques: 14,
+      tactics: 8,
+      status: "Complementary",
+      region: "🌍 Global",
+      type: "Threat Intelligence"
+    },
+    {
+      id: "nist",
+      name: "NIST AI RMF",
+      description: "AI Risk Management Framework by NIST",
+      icon: Building,
+      color: "blue",
+      coverage: 75,
+      controls: 23,
+      compliance: "88%",
+      status: "Regulatory Alignment",
+      region: "🇺🇸 US Federal",
+      type: "Risk Framework"
+    },
+    {
+      id: "iso-42001",
+      name: "ISO/IEC 42001",
+      description: "AI Management System international standard",
+      icon: FileText,
+      color: "purple",
+      coverage: 70,
+      requirements: 18,
+      certification: "In Progress",
+      status: "Certification Ready",
+      region: "🌍 International",
+      type: "Management Standard"
+    },
+    {
+      id: "google-saif",
+      name: "Google SAIF",
+      description: "Secure AI Framework principles and practices",
+      icon: Shield,
+      color: "green",
+      coverage: 82,
+      principles: 6,
+      implementation: "90%",
+      status: "Best Practices",
+      region: "🌍 Global",
+      type: "Governance Principles"
     }
-  };
+  ];
 
   return (
     <TooltipProvider>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+      <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50">
         <NavigationBar />
         
         <div className="container mx-auto px-6 py-8">
-          <div className="mb-8">
-            <div className="flex items-center gap-3 mb-4">
-              <AlertTriangle className="h-8 w-8 text-red-600" />
-              <h1 className="text-4xl font-bold text-gray-900">OWASP LLM Top 10</h1>
+          {/* Header */}
+          <div className="text-center mb-12">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <AlertTriangle className="h-12 w-12 text-red-600" />
+              <h1 className="text-5xl font-bold text-gray-900">OWASP LLM Top 10</h1>
             </div>
-            <p className="text-xl text-gray-600">
-              Security risks specific to Large Language Model applications and their mitigations
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Critical security risks for Large Language Model applications with framework integration
             </p>
           </div>
 
-          {/* Overall Compliance Summary */}
-          <Card className="mb-8">
+          {/* Framework Integration Overview */}
+          <Card className="mb-8 border-l-4 border-l-red-500">
             <CardHeader>
-              <CardTitle>Overall OWASP LLM Compliance</CardTitle>
-              <CardDescription>Summary of compliance across all OWASP LLM Top 10 categories</CardDescription>
+              <CardTitle className="flex items-center gap-2">
+                <Activity className="h-5 w-5 text-red-600" />
+                Framework Integration Overview
+              </CardTitle>
+              <CardDescription>How OWASP LLM Top 10 aligns with other AI security frameworks</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="text-center cursor-help">
-                      <div className="text-3xl font-bold text-red-600">2</div>
-                      <div className="text-sm text-gray-600">Vulnerable</div>
+              <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+                {frameworkComparison.map((framework) => (
+                  <div key={framework.id} className="text-center p-6 border rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow">
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <div className={`p-3 rounded-lg bg-${framework.color}-100 mb-3 mx-auto w-fit`}>
+                          <framework.icon className={`h-6 w-6 text-${framework.color}-600`} />
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{framework.description}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                    <div className={`text-2xl font-bold text-${framework.color}-600 mb-2`}>
+                      {framework.coverage}%
                     </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p className="max-w-xs">
-                      <strong>Vulnerable Systems:</strong> These vulnerabilities require immediate attention. 
-                      They have low compliance scores and pose significant security risks to your LLM applications.
-                    </p>
-                  </TooltipContent>
-                </Tooltip>
-
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="text-center cursor-help">
-                      <div className="text-3xl font-bold text-yellow-600">4</div>
-                      <div className="text-sm text-gray-600">Needs Review</div>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p className="max-w-xs">
-                      <strong>Needs Review:</strong> These areas require assessment and potential improvement. 
-                      Consider implementing additional security measures and monitoring.
-                    </p>
-                  </TooltipContent>
-                </Tooltip>
-
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="text-center cursor-help">
-                      <div className="text-3xl font-bold text-green-600">4</div>
-                      <div className="text-sm text-gray-600">Compliant</div>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p className="max-w-xs">
-                      <strong>Compliant:</strong> These vulnerabilities are well-managed with good compliance scores. 
-                      Continue monitoring and maintaining current security measures.
-                    </p>
-                  </TooltipContent>
-                </Tooltip>
-
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="text-center cursor-help">
-                      <div className="text-3xl font-bold text-blue-600">70%</div>
-                      <div className="text-sm text-gray-600">Avg Compliance</div>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p className="max-w-xs">
-                      <strong>Average Compliance:</strong> Overall security posture across all OWASP LLM Top 10 categories. 
-                      Target 85%+ for strong security posture.
-                    </p>
-                  </TooltipContent>
-                </Tooltip>
+                    <div className="text-sm font-medium text-gray-900 mb-3">{framework.name}</div>
+                    <Progress value={framework.coverage} className="h-2 mb-2" />
+                    <Badge variant="outline" className="text-xs">
+                      {framework.status}
+                    </Badge>
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>
 
-          {/* OWASP LLM Top 10 Items */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {owaspTop10.map((item) => (
-              <Card key={item.id} className="hover:shadow-lg transition-shadow duration-300">
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <item.icon className="h-6 w-6 text-blue-600 cursor-help" />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <div className="max-w-sm space-y-2">
-                            <p><strong>Impact:</strong> {item.impact}</p>
-                            <p><strong>Detectability:</strong> {item.detectability}</p>
-                            <p><strong>Exploitability:</strong> {item.exploitability}</p>
-                          </div>
-                        </TooltipContent>
-                      </Tooltip>
-                      <div>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <CardTitle className="text-lg cursor-help">{item.id}: {item.title}</CardTitle>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <div className="max-w-md space-y-2">
-                              <p><strong>Technical Details:</strong></p>
-                              <p className="text-sm">{item.technicalDetails}</p>
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                        <CardDescription className="mt-1">{item.description}</CardDescription>
-                      </div>
-                    </div>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Badge variant={getRiskColor(item.riskLevel)} className="cursor-help">
-                          {item.riskLevel}
-                        </Badge>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p className="max-w-xs">
-                          <strong>Risk Level:</strong> {item.riskLevel === "Critical" ? "Immediate action required" : 
-                          item.riskLevel === "High" ? "High priority for remediation" : "Monitor and assess regularly"}
-                        </p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium">Compliance Score</span>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <span className="text-sm font-bold cursor-help">{item.compliance}%</span>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p className="max-w-xs">
-                            <strong>Compliance Score:</strong> Measures how well your current security measures 
-                            address this vulnerability. Higher scores indicate better protection.
-                          </p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </div>
-                    <Progress value={item.compliance} className="h-2" />
-                    
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div className={`px-3 py-1 rounded-md text-sm font-medium border cursor-help ${getStatusColor(item.status)}`}>
-                          Status: {item.status}
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p className="max-w-xs">
-                          <strong>Status:</strong> {item.status === "Vulnerable" ? "Requires immediate attention and remediation" :
-                          item.status === "Needs Review" ? "Should be assessed and potentially improved" :
-                          "Currently well-protected with adequate security measures"}
-                        </p>
-                      </TooltipContent>
-                    </Tooltip>
-
-                    {/* Quick Actions */}
-                    <div className="flex gap-2 pt-2 border-t">
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button 
-                            size="sm" 
-                            variant="outline"
-                            onClick={() => handleCreatePolicy(item.id)}
-                            className="flex items-center gap-1"
-                          >
-                            <Plus className="h-3 w-3" />
-                            Policy
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Create a security policy specifically for this vulnerability</p>
-                        </TooltipContent>
-                      </Tooltip>
-
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button 
-                            size="sm" 
-                            variant="outline"
-                            onClick={() => handleConfigureGuardrails(item.id)}
-                            className="flex items-center gap-1"
-                          >
-                            <Settings className="h-3 w-3" />
-                            Guardrails
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Configure automated guardrails and protection measures</p>
-                        </TooltipContent>
-                      </Tooltip>
-
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button 
-                            size="sm" 
-                            variant="ghost"
-                            onClick={() => handleViewDetails(item.id)}
-                            className="flex items-center gap-1"
-                          >
-                            <Info className="h-3 w-3" />
-                            Details
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>View detailed information and remediation guidance</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </div>
-
+          {/* Quick Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            {stats.map((stat, index) => (
+              <Card key={index} className="hover:shadow-lg transition-shadow">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
                     <div>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <h4 className="text-sm font-semibold mb-2 cursor-help">Common Examples:</h4>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Real-world scenarios where this vulnerability commonly occurs</p>
-                        </TooltipContent>
-                      </Tooltip>
-                      <ul className="text-sm text-gray-600 space-y-1">
-                        {item.examples.map((example, idx) => (
-                          <li key={idx} className="flex items-start gap-2">
-                            <span className="text-gray-400">•</span>
-                            {example}
-                          </li>
-                        ))}
-                      </ul>
+                      <p className="text-sm font-medium text-gray-600">{stat.title}</p>
+                      <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
+                      <p className="text-sm text-gray-500 mt-1">{stat.change}</p>
                     </div>
-
-                    <div>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <h4 className="text-sm font-semibold mb-2 cursor-help">Key Mitigations:</h4>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Recommended security measures to address this vulnerability</p>
-                        </TooltipContent>
-                      </Tooltip>
-                      <ul className="text-sm text-gray-600 space-y-1">
-                        {item.mitigations.map((mitigation, idx) => (
-                          <li key={idx} className="flex items-start gap-2">
-                            <span className="text-green-500">✓</span>
-                            {mitigation}
-                          </li>
-                        ))}
-                      </ul>
+                    <div className={`p-3 rounded-full bg-${stat.color}-100`}>
+                      <stat.icon className={`h-6 w-6 text-${stat.color}-600`} />
                     </div>
                   </div>
                 </CardContent>
               </Card>
             ))}
           </div>
+
+          {/* Vulnerabilities Grid */}
+          <div className="mb-8">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-3xl font-bold text-gray-900">LLM Security Vulnerabilities</h2>
+              <div className="flex gap-3">
+                <Link to="/policy-mapping">
+                  <Button className="bg-red-600 hover:bg-red-700">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Create OWASP Policy
+                  </Button>
+                </Link>
+                <Button variant="outline">
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  OWASP Guide
+                </Button>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {vulnerabilities.map((vuln) => (
+                <Card key={vuln.id} className="group hover:shadow-xl transition-all duration-300 border-l-4 border-l-red-200 hover:border-l-red-500">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-3">
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <div className={`p-3 rounded-lg bg-${vuln.color}-100 group-hover:bg-${vuln.color}-200 transition-colors`}>
+                              <vuln.icon className={`h-6 w-6 text-${vuln.color}-600`} />
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <div className="max-w-xs">
+                              <p className="font-semibold mb-2">{vuln.name}</p>
+                              <p className="text-sm">{vuln.detailedDescription}</p>
+                              <div className="mt-2 pt-2 border-t">
+                                <p className="text-xs font-medium">Framework Alignment:</p>
+                                <p className="text-xs">MITRE ATLAS: {vuln.mitreMapping}</p>
+                                <p className="text-xs">ISO 42001: {vuln.isoMapping}</p>
+                              </div>
+                            </div>
+                          </TooltipContent>
+                        </Tooltip>
+                        <div>
+                          <CardTitle className="text-lg group-hover:text-red-600 transition-colors">
+                            {vuln.name}
+                          </CardTitle>
+                          <CardDescription className="mt-1">
+                            {vuln.description}
+                          </CardDescription>
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <Badge variant={vuln.severity === "Critical" ? "destructive" : "secondary"}>
+                              {vuln.severity}
+                            </Badge>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Risk Level: {vuln.severity}</p>
+                            <p>Likelihood: {vuln.likelihood}</p>
+                            <p>Impact: {vuln.impact}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  
+                  <CardContent className="space-y-4">
+                    {/* Risk Assessment */}
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm font-medium text-gray-700">Risk Score</span>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <span className="text-sm font-bold text-gray-900">{vuln.riskScore}/10</span>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <div>
+                              <p>CVSS-based risk assessment</p>
+                              <p>Likelihood: {vuln.likelihood}</p>
+                              <p>Impact: {vuln.impact}</p>
+                              <p>Exploitability: {vuln.exploitability}</p>
+                            </div>
+                          </TooltipContent>
+                        </Tooltip>
+                      </div>
+                      <Progress value={vuln.riskScore * 10} className="h-2" />
+                    </div>
+
+                    {/* Framework Mappings */}
+                    <div className="grid grid-cols-2 gap-2">
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <div className="text-center p-2 bg-orange-50 rounded border">
+                            <div className="text-sm font-bold text-orange-600">MITRE</div>
+                            <div className="text-xs text-gray-600">Mapped</div>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>MITRE ATLAS Mapping: {vuln.mitreMapping}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                      
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <div className="text-center p-2 bg-purple-50 rounded border">
+                            <div className="text-sm font-bold text-purple-600">ISO</div>
+                            <div className="text-xs text-gray-600">Aligned</div>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>ISO/IEC 42001 Control: {vuln.isoMapping}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
+
+                    {/* Quick Actions */}
+                    <div className="flex gap-2 pt-4 border-t">
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button size="sm" className="flex-1" asChild>
+                            <Link to="/policy-mapping">
+                              <Plus className="h-3 w-3 mr-1" />
+                              Create Policy
+                            </Link>
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Create a policy to protect against {vuln.name}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                      
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button variant="outline" size="sm" className="flex-1" asChild>
+                            <Link to="/policy-mapping">
+                              <Settings className="h-3 w-3 mr-1" />
+                              Configure
+                            </Link>
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Configure guardrails for {vuln.name}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                      
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button variant="outline" size="sm" className="flex-1">
+                            <Eye className="h-3 w-3 mr-1" />
+                            Details
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>View detailed information about {vuln.name}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          {/* Cross-Framework Action Center */}
+          <Card className="bg-gradient-to-r from-red-50 to-orange-50 border-red-200">
+            <CardHeader>
+              <CardTitle className="text-2xl text-red-900">Multi-Framework Policy Creation</CardTitle>
+              <CardDescription>Create comprehensive policies that address OWASP, MITRE ATLAS, and ISO 42001 requirements</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Link to="/policy-mapping">
+                  <Button className="w-full h-16 bg-red-600 hover:bg-red-700 text-left justify-start">
+                    <div className="flex items-center gap-4">
+                      <Shield className="h-6 w-6" />
+                      <div>
+                        <div className="font-semibold">OWASP + MITRE Policy</div>
+                        <div className="text-sm opacity-90">Security + Threat Intelligence</div>
+                      </div>
+                    </div>
+                  </Button>
+                </Link>
+                
+                <Link to="/policy-mapping">
+                  <Button variant="outline" className="w-full h-16 text-left justify-start border-2">
+                    <div className="flex items-center gap-4">
+                      <FileText className="h-6 w-6" />
+                      <div>
+                        <div className="font-semibold">OWASP + ISO 42001</div>
+                        <div className="text-sm text-gray-600">Security + Management</div>
+                      </div>
+                    </div>
+                  </Button>
+                </Link>
+                
+                <Link to="/policy-mapping">
+                  <Button variant="outline" className="w-full h-16 text-left justify-start border-2">
+                    <div className="flex items-center gap-4">
+                      <Globe className="h-6 w-6" />
+                      <div>
+                        <div className="font-semibold">Complete Framework</div>
+                        <div className="text-sm text-gray-600">All frameworks integrated</div>
+                      </div>
+                    </div>
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </TooltipProvider>

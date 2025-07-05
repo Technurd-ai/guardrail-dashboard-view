@@ -8,6 +8,8 @@ import Index from "./pages/Index";
 import OwaspDashboard from "./pages/OwaspDashboard";
 import NistDashboard from "./pages/NistDashboard";
 import GoogleSaifDashboard from "./pages/GoogleSaifDashboard";
+import MitreAtlasDashboard from "./pages/MitreAtlasDashboard";
+import Iso42001Dashboard from "./pages/Iso42001Dashboard";
 import PolicyMapping from "./pages/PolicyMapping";
 import NotFound from "./pages/NotFound";
 
@@ -24,6 +26,8 @@ const App = () => (
           <Route path="/owasp" element={<OwaspDashboard />} />
           <Route path="/nist" element={<NistDashboard />} />
           <Route path="/google-saif" element={<GoogleSaifDashboard />} />
+          <Route path="/mitre-atlas" element={<MitreAtlasDashboard />} />
+          <Route path="/iso-42001" element={<Iso42001Dashboard />} />
           <Route path="/policy-mapping" element={<PolicyMapping />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -128,6 +128,8 @@ const Index = () => {
       case "owasp": return "/owasp";
       case "nist": return "/nist";
       case "google-saif": return "/google-saif";
+      case "mitre-atlas": return "/mitre-atlas";
+      case "iso-42001": return "/iso-42001";
       default: return "/policy-mapping";
     }
   };

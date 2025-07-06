@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -89,34 +88,86 @@ const Index = () => {
       status: "Active",
       region: "🌍 International",
       type: "Management Standard"
+    },
+    {
+      id: "nist-csf",
+      name: "NIST Cybersecurity Framework",
+      description: "Comprehensive cybersecurity framework with AI adaptations",
+      icon: Database,
+      color: "cyan",
+      coverage: 85,
+      functions: 5,
+      controls: "23",
+      status: "Active",
+      region: "🇺🇸 US Federal",
+      type: "Cybersecurity Framework"
+    },
+    {
+      id: "eu-ai-act",
+      name: "EU AI Act",
+      description: "European Union AI regulation compliance framework",
+      icon: Globe,
+      color: "indigo",
+      coverage: 80,
+      requirements: "40+",
+      compliance: "80%",
+      status: "Active",
+      region: "🇪🇺 European Union",
+      type: "Regulatory Framework"
+    },
+    {
+      id: "ieee-standards",
+      name: "IEEE AI Standards",
+      description: "Industry technical standards for AI systems",
+      icon: Settings,
+      color: "emerald",
+      coverage: 83,
+      standards: "15+",
+      adoption: "92%",
+      status: "Active",
+      region: "🌍 Global",
+      type: "Technical Standards"
+    },
+    {
+      id: "partnership-ai",
+      name: "Partnership on AI",
+      description: "Collaborative principles for beneficial AI",
+      icon: Users,
+      color: "pink",
+      coverage: 86,
+      tenets: 6,
+      principles: "45",
+      status: "Active",
+      region: "🌍 Global",
+      type: "Ethical Guidelines"
     }
   ];
 
   const stats = [
     {
       title: "Total Frameworks",
-      value: "5",
-      change: "+2 this month",
+      value: "9",
+      change: "+4 new frameworks",
       icon: Database,
       color: "blue"
     },
     {
       title: "Avg Compliance",
-      value: "76%",
-      change: "+12% from last month",
+      value: "78%",
+      change: "+8% from last month",
       icon: TrendingUp,
       color: "green"
     },
     {
       title: "Active Policies",
-      value: "3",
-      change: "2 real-time enabled",
+      value: "5",
+      change: "3 real-time enabled",
       icon: Shield,
       color: "purple"
     },
     {
       title: "Protected Projects",
-      value: "3",
+      value: "8",
       change: "All monitored",
       icon: Users,
       color: "orange"
@@ -130,6 +181,10 @@ const Index = () => {
       case "google-saif": return "/google-saif";
       case "mitre-atlas": return "/mitre-atlas";
       case "iso-42001": return "/iso-42001";
+      case "nist-csf": return "/nist-csf";
+      case "eu-ai-act": return "/eu-ai-act";
+      case "ieee-standards": return "/ieee-standards";
+      case "partnership-ai": return "/partnership-ai";
       default: return "/policy-mapping";
     }
   };
@@ -305,6 +360,54 @@ const Index = () => {
                           <div className="text-center">
                             <div className="text-lg font-bold text-yellow-600">{framework.certification}</div>
                             <div className="text-xs text-gray-500">Status</div>
+                          </div>
+                        </>
+                      )}
+                      {framework.id === "nist-csf" && (
+                        <>
+                          <div className="text-center">
+                            <div className="text-lg font-bold text-cyan-600">{framework.functions}</div>
+                            <div className="text-xs text-gray-500">Functions</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-lg font-bold text-blue-600">{framework.controls}</div>
+                            <div className="text-xs text-gray-500">Controls</div>
+                          </div>
+                        </>
+                      )}
+                      {framework.id === "eu-ai-act" && (
+                        <>
+                          <div className="text-center">
+                            <div className="text-lg font-bold text-indigo-600">{framework.requirements}</div>
+                            <div className="text-xs text-gray-500">Requirements</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-lg font-bold text-purple-600">{framework.compliance}</div>
+                            <div className="text-xs text-gray-500">Compliance</div>
+                          </div>
+                        </>
+                      )}
+                      {framework.id === "ieee-standards" && (
+                        <>
+                          <div className="text-center">
+                            <div className="text-lg font-bold text-emerald-600">{framework.standards}</div>
+                            <div className="text-xs text-gray-500">Standards</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-lg font-bold text-green-600">{framework.adoption}</div>
+                            <div className="text-xs text-gray-500">Adoption</div>
+                          </div>
+                        </>
+                      )}
+                      {framework.id === "partnership-ai" && (
+                        <>
+                          <div className="text-center">
+                            <div className="text-lg font-bold text-pink-600">{framework.tenets}</div>
+                            <div className="text-xs text-gray-500">Tenets</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-lg font-bold text-rose-600">{framework.principles}</div>
+                            <div className="text-xs text-gray-500">Principles</div>
                           </div>
                         </>
                       )}

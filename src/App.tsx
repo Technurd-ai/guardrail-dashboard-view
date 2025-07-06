@@ -10,6 +10,10 @@ import NistDashboard from "./pages/NistDashboard";
 import GoogleSaifDashboard from "./pages/GoogleSaifDashboard";
 import MitreAtlasDashboard from "./pages/MitreAtlasDashboard";
 import Iso42001Dashboard from "./pages/Iso42001Dashboard";
+import NistCsfDashboard from "./pages/NistCsfDashboard";
+import EuAiActDashboard from "./pages/EuAiActDashboard";
+import IeeeStandardsDashboard from "./pages/IeeeStandardsDashboard";
+import PartnershipAiDashboard from "./pages/PartnershipAiDashboard";
 import PolicyMapping from "./pages/PolicyMapping";
 import NotFound from "./pages/NotFound";
 
@@ -28,6 +32,10 @@ const App = () => (
           <Route path="/google-saif" element={<GoogleSaifDashboard />} />
           <Route path="/mitre-atlas" element={<MitreAtlasDashboard />} />
           <Route path="/iso-42001" element={<Iso42001Dashboard />} />
+          <Route path="/nist-csf" element={<NistCsfDashboard />} />
+          <Route path="/eu-ai-act" element={<EuAiActDashboard />} />
+          <Route path="/ieee-standards" element={<IeeeStandardsDashboard />} />
+          <Route path="/partnership-ai" element={<PartnershipAiDashboard />} />
           <Route path="/policy-mapping" element={<PolicyMapping />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -1,9 +1,8 @@
-
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Shield, Menu, Home, AlertTriangle, Building, Search, Settings } from "lucide-react";
+import { Shield, Menu, Home, AlertTriangle, Building, Search, Settings, Target, FileText, Database, Globe, Users } from "lucide-react";
 
 const NavigationBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,7 +13,13 @@ const NavigationBar = () => {
     { path: "/owasp", label: "OWASP LLM Top 10", icon: AlertTriangle },
     { path: "/nist", label: "NIST AI Framework", icon: Building },
     { path: "/google-saif", label: "Google SAIF", icon: Shield },
-    { path: "/policy-mapping", label: "Policy Mapping", icon: Settings },
+    { path: "/mitre-atlas", label: "MITRE ATLAS", icon: Target },
+    { path: "/iso-42001", label: "ISO/IEC 42001", icon: FileText },
+    { path: "/nist-csf", label: "NIST CSF", icon: Database },
+    { path: "/eu-ai-act", label: "EU AI Act", icon: Globe },
+    { path: "/ieee-standards", label: "IEEE Standards", icon: Settings },
+    { path: "/partnership-ai", label: "Partnership AI", icon: Users },
+    { path: "/policy-mapping", label: "Policy Mapping", icon: Search },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -29,19 +34,23 @@ const NavigationBar = () => {
             <span className="text-xl font-bold text-gray-900">AI Compliance</span>
           </div>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation - Show only main frameworks */}
           <div className="hidden md:flex items-center space-x-1">
-            {navItems.map((item) => (
+            {navItems.slice(0, 6).map((item) => (
               <Link key={item.path} to={item.path}>
                 <Button
                   variant={isActive(item.path) ? "default" : "ghost"}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 text-sm"
+                  size="sm"
                 >
                   <item.icon className="h-4 w-4" />
                   {item.label}
                 </Button>
               </Link>
             ))}
+            <Button variant="ghost" size="sm" className="text-sm">
+              More...
+            </Button>
           </div>
 
           {/* Mobile Navigation */}
@@ -59,6 +68,7 @@ const NavigationBar = () => {
                       <Button
                         variant={isActive(item.path) ? "default" : "ghost"}
                         className="w-full justify-start gap-2"
+                        size="sm"
                       >
                         <item.icon className="h-4 w-4" />
                         {item.label}

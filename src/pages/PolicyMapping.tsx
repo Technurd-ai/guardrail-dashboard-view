@@ -33,10 +33,14 @@ const PolicyMapping = () => {
       effectiveness: 85,
       frameworkCoverage: {
         "nist": 85,
-        "iso27001": 75,
+        "iso42001": 75,
         "owasp": 90,
         "googleSaif": 80,
-        "mitreAtlas": 70
+        "mitreAtlas": 70,
+        "nistCsf": 82,
+        "euAiAct": 78,
+        "ieeeStandards": 73,
+        "partnershipAi": 81
       },
       realTimeProtection: {
         enabled: true,
@@ -58,10 +62,14 @@ const PolicyMapping = () => {
       effectiveness: 92,
       frameworkCoverage: {
         "nist": 95,
-        "iso27001": 90,
+        "iso42001": 90,
         "owasp": 85,
         "googleSaif": 88,
-        "mitreAtlas": 80
+        "mitreAtlas": 80,
+        "nistCsf": 91,
+        "euAiAct": 93,
+        "ieeeStandards": 86,
+        "partnershipAi": 89
       },
       realTimeProtection: {
         enabled: true,
@@ -83,10 +91,14 @@ const PolicyMapping = () => {
       effectiveness: 78,
       frameworkCoverage: {
         "nist": 80,
-        "iso27001": 70,
+        "iso42001": 70,
         "owasp": 85,
         "googleSaif": 75,
-        "mitreAtlas": 85
+        "mitreAtlas": 85,
+        "nistCsf": 77,
+        "euAiAct": 72,
+        "ieeeStandards": 79,
+        "partnershipAi": 74
       },
       realTimeProtection: {
         enabled: false,
@@ -109,8 +121,8 @@ const PolicyMapping = () => {
       coverage: 87
     },
     {
-      id: "iso27001",
-      name: "ISO 42001",
+      id: "iso42001",
+      name: "ISO/IEC 42001",
       region: "🌍",
       type: "Standard",
       status: "Active",
@@ -147,6 +159,46 @@ const PolicyMapping = () => {
       description: "Adversarial Threat Landscape for AI Systems",
       color: "orange",
       coverage: 75
+    },
+    {
+      id: "nistCsf",
+      name: "NIST CSF",
+      region: "🇺🇸",
+      type: "Cybersecurity Framework",
+      status: "Active",
+      description: "NIST Cybersecurity Framework for AI",
+      color: "indigo",
+      coverage: 83
+    },
+    {
+      id: "euAiAct",
+      name: "EU AI Act",
+      region: "🇪🇺",
+      type: "Regulation",
+      status: "Active",
+      description: "European Union AI Act Compliance",
+      color: "yellow",
+      coverage: 81
+    },
+    {
+      id: "ieeeStandards",
+      name: "IEEE AI Standards",
+      region: "🌍",
+      type: "Technical Standards",
+      status: "Active",
+      description: "IEEE Standards for Artificial Intelligence",
+      color: "teal",
+      coverage: 79
+    },
+    {
+      id: "partnershipAi",
+      name: "Partnership on AI",
+      region: "🌍",
+      type: "Governance Principles",
+      status: "Active",
+      description: "Partnership on AI Tenets and Best Practices",
+      color: "pink",
+      coverage: 78
     }
   ];
 
@@ -160,10 +212,14 @@ const PolicyMapping = () => {
       defaultSensitivity: 80,
       frameworks: {
         nist: ["MS.3 - Risk Monitoring", "MG.1 - Risk Response"],
-        iso27001: ["A.12.2.1 - Controls against malware", "A.14.2.5 - Secure system engineering"],
+        iso42001: ["A.12.2.1 - Controls against malware", "A.14.2.5 - Secure system engineering"],
         owasp: ["LLM01 - Prompt Injection"],
         googleSaif: ["Secure by Design", "Understand Limitations"],
-        mitreAtlas: ["AML.T0051 - LLM Prompt Injection", "AML.T0054 - LLM Jailbreak"]
+        mitreAtlas: ["AML.T0051 - LLM Prompt Injection", "AML.T0054 - LLM Jailbreak"],
+        nistCsf: ["PR.DS-1 - Data-at-rest protection", "DE.CM-1 - Network monitoring"],
+        euAiAct: ["Article 9 - Risk management system", "Article 15 - Accuracy requirements"],
+        ieeeStandards: ["IEEE 2857 - Privacy engineering", "IEEE 2858 - System transparency"],
+        partnershipAi: ["Safety - Rigorous safety evaluation", "Fairness - Bias mitigation"]
       }
     },
     {
@@ -175,10 +231,14 @@ const PolicyMapping = () => {
       defaultSensitivity: 90,
       frameworks: {
         nist: ["GV.3 - AI Risk Tolerance", "MS.1 - Risk Measurement"],
-        iso27001: ["A.18.1.4 - Privacy and protection of PII"],
+        iso42001: ["A.18.1.4 - Privacy and protection of PII"],
         owasp: ["LLM06 - Sensitive Information Disclosure"],
         googleSaif: ["Secure by Default", "Secure Deployment"],
-        mitreAtlas: ["AML.T0024 - Exfiltration via ML Model", "AML.T0025 - Data from ML Model Repository"]
+        mitreAtlas: ["AML.T0024 - Exfiltration via ML Model", "AML.T0025 - Data from ML Model Repository"],
+        nistCsf: ["PR.DS-3 - Asset management", "PR.IP-3 - Configuration change control"],
+        euAiAct: ["Article 10 - Data governance", "Article 64 - Data protection"],
+        ieeeStandards: ["IEEE 2857 - Privacy engineering", "IEEE 2859 - Data governance"],
+        partnershipAi: ["Privacy - Data minimization", "Accountability - Data governance"]
       }
     },
     {
@@ -190,10 +250,14 @@ const PolicyMapping = () => {
       defaultSensitivity: 75,
       frameworks: {
         nist: ["GV.1 - AI Risk Management"],
-        iso27001: ["A.8.2.3 - Handling of assets"],
+        iso42001: ["A.8.2.3 - Handling of assets"],
         owasp: ["LLM02 - Insecure Output Handling"],
         googleSaif: ["Secure by Design"],
-        mitreAtlas: ["AML.T0048 - Societal Harm"]
+        mitreAtlas: ["AML.T0048 - Societal Harm"],
+        nistCsf: ["PR.AC-4 - Access permissions", "DE.AE-2 - Potential impact analysis"],
+        euAiAct: ["Article 26 - Fundamental rights impact assessment"],
+        ieeeStandards: ["IEEE 2858 - System transparency", "IEEE 2857 - Privacy engineering"],
+        partnershipAi: ["Safety - Content moderation", "Social good - Harmful content prevention"]
       }
     },
     {
@@ -205,10 +269,52 @@ const PolicyMapping = () => {
       defaultSensitivity: 85,
       frameworks: {
         nist: ["GV.1 - AI Risk Management", "MG.2 - Risk Treatment"],
-        iso27001: ["A.6.1.1 - Information security roles and responsibilities"],
+        iso42001: ["A.6.1.1 - Information security roles and responsibilities"],
         owasp: ["LLM02 - Insecure Output Handling", "LLM09 - Overreliance"],
         googleSaif: ["Secure by Design", "Secure by Default"],
-        mitreAtlas: ["AML.T0048 - Societal Harm", "AML.T0049 - Amplifying Biases"]
+        mitreAtlas: ["AML.T0048 - Societal Harm", "AML.T0049 - Amplifying Biases"],
+        nistCsf: ["DE.AE-3 - Event data aggregation", "RS.MI-1 - Incident mitigation"],
+        euAiAct: ["Article 9 - Risk management system", "Article 26 - Fundamental rights impact"],
+        ieeeStandards: ["IEEE 2858 - System transparency", "IEEE 2859 - Data governance"],
+        partnershipAi: ["Safety - Harm prevention", "Fairness - Bias detection and mitigation"]
+      }
+    },
+    {
+      id: "financial-data",
+      name: "Financial Data Protection",
+      description: "Protects sensitive financial and payment information",
+      icon: Database,
+      severity: "Critical",
+      defaultSensitivity: 95,
+      frameworks: {
+        nist: ["GV.3 - AI Risk Tolerance", "MS.2 - Risk assessment"],
+        iso42001: ["A.13.2.1 - Information transfer policies", "A.18.1.4 - Privacy protection"],
+        owasp: ["LLM06 - Sensitive Information Disclosure", "LLM02 - Insecure Output Handling"],
+        googleSaif: ["Secure by Default", "Secure Deployment"],
+        mitreAtlas: ["AML.T0024 - Exfiltration via ML Model"],
+        nistCsf: ["PR.DS-1 - Data-at-rest protection", "PR.DS-2 - Data-in-transit protection"],
+        euAiAct: ["Article 10 - Data governance", "Article 64 - Data protection compliance"],
+        ieeeStandards: ["IEEE 2857 - Privacy engineering", "IEEE 2859 - Data governance"],
+        partnershipAi: ["Privacy - Financial data protection", "Security - Data encryption"]
+      }
+    },
+    {
+      id: "customer-privacy",
+      name: "Customer Privacy",
+      description: "Ensures customer privacy and data protection compliance",
+      icon: Users,
+      severity: "High",
+      defaultSensitivity: 88,
+      frameworks: {
+        nist: ["GV.2 - AI risk management strategy", "GV.3 - AI risk tolerance"],
+        iso42001: ["A.18.1.4 - Privacy and protection of PII", "A.13.2.1 - Information transfer"],
+        owasp: ["LLM06 - Sensitive Information Disclosure"],
+        googleSaif: ["Secure by Default", "Understand Limitations"],
+        mitreAtlas: ["AML.T0024 - Exfiltration via ML Model"],
+        nistCsf: ["PR.IP-11 - Cybersecurity integrated into HR practices"],
+        euAiAct: ["Article 10 - Data governance", "Article 26 - Fundamental rights impact"],
+        ieeeStandards: ["IEEE 2857 - Privacy engineering"],
+        partnershipAi: ["Privacy - User consent", "Accountability - Privacy by design"]
       }
     }
   ];
@@ -267,7 +373,7 @@ const PolicyMapping = () => {
                 <DialogHeader>
                   <DialogTitle>Create New Policy with Framework Coverage</DialogTitle>
                   <DialogDescription>
-                    Define a policy with guardrails and see real-time framework coverage mapping
+                    Define a policy with guardrails and see real-time framework coverage mapping across all 9 frameworks
                   </DialogDescription>
                 </DialogHeader>
                 <CreatePolicyForm 
@@ -305,20 +411,24 @@ const PolicyMapping = () => {
               <Activity className="h-5 w-5" />
               Framework Coverage Overview
             </CardTitle>
-            <CardDescription>How well your policies address each compliance framework</CardDescription>
+            <CardDescription>How well your policies address each compliance framework (9 frameworks total)</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {frameworks.map((framework) => (
-                <div key={framework.id} className="text-center p-6 border rounded-lg bg-white shadow-sm">
-                  <div className={`text-4xl font-bold text-${framework.color}-600 mb-2`}>
+                <div key={framework.id} className="text-center p-4 border rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow">
+                  <div className="text-sm font-medium text-gray-600 mb-1">{framework.region}</div>
+                  <div className={`text-3xl font-bold text-${framework.color}-600 mb-2`}>
                     {framework.coverage}%
                   </div>
                   <div className="text-sm font-medium text-gray-900 mb-3">{framework.name}</div>
-                  <Progress value={framework.coverage} className="h-3" />
-                  <div className="text-xs text-gray-500 mt-2">
+                  <Progress value={framework.coverage} className="h-2 mb-2" />
+                  <div className="text-xs text-gray-500">
                     {Math.round(framework.coverage * policies.length / 100)} of {policies.length} policies mapped
                   </div>
+                  <Badge variant="secondary" className="text-xs mt-2">
+                    {framework.type}
+                  </Badge>
                 </div>
               ))}
             </div>
